@@ -6,7 +6,7 @@
 
 <p align="center">
   A tiny Windows tray app that keeps your browser's RAM footprint low.<br>
-  ~330 KB, no installer, no runtime, one dependency-free <code>.exe</code>.
+  327 KB, no installer, no runtime, a single <code>.exe</code>.
 </p>
 
 <p align="center">
