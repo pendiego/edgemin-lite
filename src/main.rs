@@ -18,6 +18,7 @@ use windows_sys::Win32::UI::WindowsAndMessaging::*;
 const WM_TRAY: u32 = WM_APP + 1;
 const RUN_KEY: *const u16 = w!("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
 const RUN_VAL: *const u16 = w!("edgemin-lite");
+const APPROVED_KEY: *const u16 = w!("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\StartupApproved\\Run");
 
 static ICO: &[u8] = include_bytes!("../assets/edgemin-lite.ico");
 
@@ -72,20 +73,45 @@ fn w(s: &str) -> Vec<u16> {
     s.encode_utf16().chain(std::iter::once(0)).collect()
 }
 
+/// Command line stored in the Run key: the quoted path of this exe.
+fn run_command() -> Option<String> {
+    std::env::current_exe().ok().map(|e| format!("\"{}\"", e.display()))
+}
+
+/// True only if the Run value points at this exe and Task Manager hasn't disabled it.
 fn autostart_enabled() -> bool {
+    let Some(want) = run_command() else { return false };
     unsafe {
-        RegGetValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VAL, RRF_RT_REG_SZ, null_mut(), null_mut(), null_mut())
-            == ERROR_SUCCESS
+        let mut buf = [0u16; 1024];
+        let mut len = (buf.len() * 2) as u32;
+        if RegGetValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VAL, RRF_RT_REG_SZ, null_mut(), buf.as_mut_ptr().cast(), &mut len)
+            != ERROR_SUCCESS
+        {
+            return false;
+        }
+        let got = String::from_utf16_lossy(&buf[..(len as usize / 2).saturating_sub(1)]);
+        if !got.eq_ignore_ascii_case(&want) {
+            return false;
+        }
+        let mut b = [0u8; 12];
+        let mut blen = 12u32;
+        let r = RegGetValueW(HKEY_CURRENT_USER, APPROVED_KEY, RUN_VAL, RRF_RT_REG_BINARY, null_mut(), b.as_mut_ptr().cast(), &mut blen);
+        !(r == ERROR_SUCCESS && matches!(b[0], 3 | 7))
     }
 }
 
-fn toggle_autostart() {
+fn set_autostart(on: bool) {
     unsafe {
-        if autostart_enabled() {
-            RegDeleteKeyValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VAL);
-        } else if let Ok(exe) = std::env::current_exe() {
-            let d = w(&format!("\"{}\"", exe.display()));
-            RegSetKeyValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VAL, REG_SZ, d.as_ptr().cast(), (d.len() * 2) as u32);
+        // Drops a Task Manager "disabled" flag; absence means enabled.
+        RegDeleteKeyValueW(HKEY_CURRENT_USER, APPROVED_KEY, RUN_VAL);
+        match run_command() {
+            Some(cmd) if on => {
+                let d = w(&cmd);
+                RegSetKeyValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VAL, REG_SZ, d.as_ptr().cast(), (d.len() * 2) as u32);
+            }
+            _ => {
+                RegDeleteKeyValueW(HKEY_CURRENT_USER, RUN_KEY, RUN_VAL);
+            }
         }
     }
 }
@@ -313,7 +339,7 @@ fn show_menu(hwnd: HWND) {
             }
             5 => reload(hwnd),
             8 => gui::open(hwnd, with(|s| s.cfg.clone())),
-            6 => toggle_autostart(),
+            6 => set_autostart(!autostart_enabled()),
             7 => {
                 DestroyWindow(hwnd);
             }

@@ -308,8 +308,9 @@ unsafe fn save(h: HWND) {
         MessageBoxW(h, w!("Could not write the config file."), w!("edgemin-lite"), MB_ICONERROR);
         return;
     }
-    if checked(h, ASTART) != crate::autostart_enabled() {
-        crate::toggle_autostart();
+    let astart = checked(h, ASTART);
+    if astart != crate::autostart_enabled() {
+        crate::set_autostart(astart);
     }
     PostMessageW(owner, WM_RELOAD, 0, 0);
     DestroyWindow(h);
