@@ -3,8 +3,8 @@
 1 ICON "assets/edgemin-lite.ico"
 
 1 VERSIONINFO
-FILEVERSION 0,1,0,0
-PRODUCTVERSION 0,1,0,0
+FILEVERSION 0,1,1,0
+PRODUCTVERSION 0,1,1,0
 FILEOS VOS_NT_WINDOWS32
 FILETYPE VFT_APP
 BEGIN
@@ -14,12 +14,12 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "pendiego"
       VALUE "FileDescription", "edgemin-lite browser memory trimmer"
-      VALUE "FileVersion", "0.1.0"
+      VALUE "FileVersion", "0.1.1"
       VALUE "InternalName", "edgemin-lite"
       VALUE "LegalCopyright", "MIT License (code); icon derived from Rizonesoft Edgemin"
       VALUE "OriginalFilename", "edgemin-lite.exe"
       VALUE "ProductName", "edgemin-lite"
-      VALUE "ProductVersion", "0.1.0"
+      VALUE "ProductVersion", "0.1.1"
     END
   END
   BLOCK "VarFileInfo"
