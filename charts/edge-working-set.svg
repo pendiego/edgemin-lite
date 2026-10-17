@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" font-family="Segoe UI, Arial, sans-serif" font-size="12">
+<rect width="680" height="380" fill="#fff"/>
+<text x="340" y="22" text-anchor="middle" font-size="15" font-weight="bold">Working set do Edge (soma de msedge.exe), MB, escala log</text>
+<g stroke="#ddd"><line x1="70" y1="300" x2="610" y2="300"/><line x1="70" y1="195" x2="610" y2="195"/><line x1="70" y1="90" x2="610" y2="90"/></g>
+<g fill="#555" text-anchor="end"><text x="64" y="304">10</text><text x="64" y="199">100</text><text x="64" y="94">1000</text></g>
+<line x1="70" y1="300" x2="610" y2="300" stroke="#555"/><line x1="70" y1="40" x2="70" y2="300" stroke="#555"/>
+<g fill="#555" text-anchor="middle"><text x="96" y="318">+3 s</text><text x="158" y="318">+10 s</text><text x="335" y="318">+30 s</text><text x="600" y="318">+60 s</text></g>
+<line x1="70" y1="66" x2="610" y2="66" stroke="#888" stroke-dasharray="6 4"/>
+<text x="606" y="58" text-anchor="end" fill="#555">sem ferramenta: ~1.700 MB (referência aproximada, não 4 amostras)</text>
+<polyline fill="none" stroke="#d9534f" stroke-width="2.5" points="96.5,153.5 158.3,163.6 335,214 600,188.3"/>
+<polyline fill="none" stroke="#2a7ae2" stroke-width="2.5" points="96.5,236.8 158.3,200.3 335,219.1 600,231.4"/>
+<g fill="#d9534f"><circle cx="96.5" cy="153.5" r="4"/><circle cx="158.3" cy="163.6" r="4"/><circle cx="335" cy="214" r="4"/><circle cx="600" cy="188.3" r="4"/></g>
+<g fill="#2a7ae2"><circle cx="96.5" cy="236.8" r="4"/><circle cx="158.3" cy="200.3" r="4"/><circle cx="335" cy="219.1" r="4"/><circle cx="600" cy="231.4" r="4"/></g>
+<g font-size="11"><g fill="#d9534f"><text x="96" y="143" text-anchor="middle">249</text><text x="158" y="153" text-anchor="middle">196</text><text x="335" y="204" text-anchor="middle">66</text><text x="600" y="178" text-anchor="middle">116</text></g>
+<g fill="#2a7ae2"><text x="96" y="256" text-anchor="middle">40</text><text x="158" y="219" text-anchor="middle">89</text><text x="335" y="239" text-anchor="middle">59</text><text x="600" y="251" text-anchor="middle">45</text></g></g>
+<line x1="200" y1="352" x2="224" y2="352" stroke="#d9534f" stroke-width="2.5"/><text x="230" y="356">Original (limite 100)</text>
+<line x1="380" y1="352" x2="404" y2="352" stroke="#2a7ae2" stroke-width="2.5"/><text x="410" y="356">edgemin-lite (limite 100)</text>
+</svg>
